@@ -1,85 +1,94 @@
 import React, { useEffect, useState } from 'react';
 
-const baseTime = 300;
+const baseTime = 0;
 
 function App() {
-  //   const [seconds, setSeconds] = useState(baseTime);
-  //   const [isRunning, setIsRunning] = useState(false);
-  //   const [timeInput, setTimeInput] = useState(baseTime)
-
-  //   useEffect(() => {
-  //     let interval = null;
-  //     if (isRunning) {
-  //       interval = setInterval(() => {
-  //         setSeconds((seconds) => seconds - 1);
-  //       }, 1000);
-  //     }
-  //     if (seconds === 0) {
-  //       clearInterval(interval)
-  //     } else if (!isRunning && seconds !== 0) {
-  //       clearInterval(interval);
-  //     }
-  //     return () => clearInterval(interval);
-  //   }, [isRunning, seconds]);
-
-  //   const handleStartPress = () => {
-  //     setIsRunning(true);
-  //   };
-
-  //   return (
-  //     <>
-  //       <div>
-  //         <form action="">
-  //           <input type="time" name="timeInput" id="timeInput" />
-  //         </form>
-  //       </div>
-  //       <div>
-  //         <button onClick={handleStartPress}>Start Timer</button>
-  //         <p>{seconds} seconds left</p>
-  //       </div>
-  //     </>
-  //   );
-  // }
-
-  const [minutes, setMinutes] = useState(0);
   const [hours, setHours] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(baseTime);
+  const [isRunning, setIsRunning] = useState(false);
+  // const [intervalBell, setIntervalBell] = useState(false);
+  const [timeInput, setTimeInput] = useState(baseTime)
+  const [intervalInput, setIntervalInput] = useState(0);
 
-  const startTimer = () => {
-    const totalSeconds = minutes * 60;
+  const totalSeconds = timeInput * 60;
+  let intervalSeconds = intervalInput * 60;
+
+  useEffect(() => {
+    let meditationTimer = null;
+    let intervalBellTimer = null;
+    if (isRunning) {
+      meditationTimer = setInterval(() => {
+        setSeconds(seconds - 1);
+        if (seconds === 0 && minutes > 0) {
+          setMinutes(minutes - 1);
+          setSeconds(59);
+        }
+        if (minutes === 0 && hours > 0) {
+          setHours(hours - 1);
+          setMinutes(59);
+        }
+      }, 1000);
+
+      if (intervalInput > 0) {
+        intervalBellTimer = setInterval(() => {
+          intervalSeconds - 1
+          console.log(intervalSeconds)
+        }, 1000);
+      }
+    }
+
+    if (seconds === 0 && minutes === 0 && hours === 0) {
+      clearInterval(meditationTimer)
+      clearInterval(intervalBellTimer)
+    }
+    if (seconds === 0 && minutes === 0 && hours === 0 && isRunning === true) {
+      console.log("finalBells");
+      setIsRunning(false);
+    }
+    // else if (!isRunning && seconds !== 0) {
+    //   clearInterval(interval);
+    // }
+    return () => {
+      clearInterval(meditationTimer);
+      clearInterval(intervalBellTimer);
+    }
+
+  }, [isRunning, seconds]);
+
+  const handleStartPress = () => {
     setHours(Math.floor(totalSeconds / 3600));
     setMinutes(Math.floor((totalSeconds % 3600) / 60));
     setSeconds(totalSeconds % 60);
-    setInterval(() => {
-      setSeconds(seconds - 1);
-      if (seconds === 0 && minutes > 0) {
-        setMinutes(minutes - 1);
-        setSeconds(59);
-      }
-      if (minutes === 0 && hours > 0) {
-        setHours(hours - 1);
-        setMinutes(59);
-      }
-    }, 1000);
+    setIsRunning(true);
   };
 
   return (
-    <div>
-      <label>
-        Minutes:
-        <input
-          type="number"
-          value={minutes}
-          onChange={(event) => setMinutes(event.target.value)}
-        />
-      </label>
-      <button onClick={startTimer}>Start Timer</button>
-      <p>
-        {hours}:{minutes}:{seconds}
-      </p>
-    </div>
+    <>
+      <div>
+        <label>
+          Minutes:
+          <input
+            type="number"
+            value={timeInput}
+            onChange={(event) => setTimeInput(event.target.value)}
+          />
+        </label>
+        Interval Bell every:
+        <label>
+          <input
+            type="number"
+            value={intervalInput}
+            onChange={(event) => setIntervalInput(event.target.value)}
+          />
+        </label>
+      </div>
+      <div>
+        <button onClick={handleStartPress}>Start Timer</button>
+        <p>{hours}:{minutes}:{seconds}</p>
+      </div>
+    </>
   );
 }
-
 
 export default App
