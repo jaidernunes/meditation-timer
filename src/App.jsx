@@ -7,16 +7,16 @@ function App() {
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(baseTime);
   const [isRunning, setIsRunning] = useState(false);
-  // const [intervalBell, setIntervalBell] = useState(false);
+  const [isInterval, setIsInterval] = useState(false);
   const [timeInput, setTimeInput] = useState(baseTime)
   const [intervalInput, setIntervalInput] = useState(0);
+  const [intervalTimer, setIntervalTimer] = useState(0);
 
   const totalSeconds = timeInput * 60;
-  let intervalSeconds = intervalInput * 60;
+  const intervalSeconds = intervalInput * 60;
 
   useEffect(() => {
     let meditationTimer = null;
-    let intervalBellTimer = null;
     if (isRunning) {
       meditationTimer = setInterval(() => {
         setSeconds(seconds - 1);
@@ -29,21 +29,16 @@ function App() {
           setMinutes(59);
         }
       }, 1000);
-
-      if (intervalInput > 0) {
-        intervalBellTimer = setInterval(() => {
-          intervalSeconds - 1
-          console.log(intervalSeconds)
-        }, 1000);
-      }
     }
+
 
     if (seconds === 0 && minutes === 0 && hours === 0) {
       clearInterval(meditationTimer)
-      clearInterval(intervalBellTimer)
     }
+
     if (seconds === 0 && minutes === 0 && hours === 0 && isRunning === true) {
       console.log("finalBells");
+      clearInterval(meditationTimer)
       setIsRunning(false);
     }
     // else if (!isRunning && seconds !== 0) {
@@ -51,15 +46,36 @@ function App() {
     // }
     return () => {
       clearInterval(meditationTimer);
-      clearInterval(intervalBellTimer);
     }
 
-  }, [isRunning, seconds]);
+  }, [isRunning, seconds, isInterval]);
+
+  useEffect(() => {
+    let intervalBellTimer = null;
+    if (isInterval) {
+      intervalBellTimer = setInterval(() => {
+        console.log("single bell")
+      }, intervalSeconds * 1000);
+    }
+    if (seconds === 0 && minutes === 0 && hours === 0) {
+      clearInterval(intervalBellTimer)
+      setIsInterval(false);
+    }
+    return () => {
+      clearInterval(intervalBellTimer);
+    }
+  }, [isInterval])
+
 
   const handleStartPress = () => {
     setHours(Math.floor(totalSeconds / 3600));
     setMinutes(Math.floor((totalSeconds % 3600) / 60));
     setSeconds(totalSeconds % 60);
+    if (intervalInput !== 0) {
+      setIntervalTimer(intervalSeconds);
+      console.log(intervalTimer)
+      setIsInterval(true)
+    }
     setIsRunning(true);
   };
 
@@ -83,6 +99,7 @@ function App() {
           />
         </label>
       </div>
+
       <div>
         <button onClick={handleStartPress}>Start Timer</button>
         <p>{hours}:{minutes}:{seconds}</p>
