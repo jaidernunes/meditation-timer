@@ -67,14 +67,13 @@ function App() {
   }, [isInterval])
 
   const handleStartPress = () => {
+    if (intervalInput !== 0) {
+      setIntervalTimer(intervalSeconds);
+      setIsInterval(true)
+    }
     setHours(Math.floor(totalSeconds / 3600));
     setMinutes(Math.floor((totalSeconds % 3600) / 60));
     setSeconds(totalSeconds % 60);
-    if (intervalInput !== 0) {
-      setIntervalTimer(intervalSeconds);
-      console.log(intervalTimer)
-      setIsInterval(true)
-    }
     setIsRunning(true);
   };
 
