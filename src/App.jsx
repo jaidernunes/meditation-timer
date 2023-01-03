@@ -20,7 +20,6 @@ function App() {
   const endingBell = new Audio(finalBell);
   const middleBell = new Audio(intervalBell);
 
-
   useEffect(() => {
     let meditationTimer = null;
     if (isRunning) {
@@ -65,6 +64,15 @@ function App() {
       clearInterval(intervalBellTimer);
     }
   }, [isInterval])
+
+  useEffect(() => {
+    clearIntervals();
+  }, []);
+
+  function clearIntervals() {
+    clearInterval(meditationTimer);
+    clearInterval(intervalBellTimer);
+  }
 
   const handleStartPress = () => {
     if (intervalInput !== 0) {
