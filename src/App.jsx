@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import finalBell from './assets/finalBell1.mp3';
+import intervalBell from './assets/intervalBell1.mp3'
 
 const baseTime = 0;
 
@@ -15,6 +17,10 @@ function App() {
   const totalSeconds = timeInput * 60;
   const intervalSeconds = intervalInput * 60;
 
+  const endingBell = new Audio(finalBell);
+  const middleBell = new Audio(intervalBell);
+
+
   useEffect(() => {
     let meditationTimer = null;
     if (isRunning) {
@@ -30,15 +36,10 @@ function App() {
         }
       }, 1000);
     }
-
-
-    if (seconds === 0 && minutes === 0 && hours === 0) {
-      clearInterval(meditationTimer)
-    }
-
     if (seconds === 0 && minutes === 0 && hours === 0 && isRunning === true) {
       console.log("finalBells");
       clearInterval(meditationTimer)
+      endingBell.play();
       setIsRunning(false);
     }
     // else if (!isRunning && seconds !== 0) {
@@ -47,7 +48,6 @@ function App() {
     return () => {
       clearInterval(meditationTimer);
     }
-
   }, [isRunning, seconds, isInterval]);
 
   useEffect(() => {
@@ -55,6 +55,7 @@ function App() {
     if (isInterval) {
       intervalBellTimer = setInterval(() => {
         console.log("single bell")
+        middleBell.play();
       }, intervalSeconds * 1000);
     }
     if (seconds === 0 && minutes === 0 && hours === 0) {
@@ -65,7 +66,6 @@ function App() {
       clearInterval(intervalBellTimer);
     }
   }, [isInterval])
-
 
   const handleStartPress = () => {
     setHours(Math.floor(totalSeconds / 3600));
@@ -83,13 +83,16 @@ function App() {
     <>
       <div>
         <label>
-          Minutes:
+          Session duration:
           <input
             type="number"
             value={timeInput}
             onChange={(event) => setTimeInput(event.target.value)}
           />
+          &nbsp; minutes
         </label>
+        <br />
+
         Interval Bell every:
         <label>
           <input
@@ -97,6 +100,7 @@ function App() {
             value={intervalInput}
             onChange={(event) => setIntervalInput(event.target.value)}
           />
+          &nbsp; minutes
         </label>
       </div>
 
