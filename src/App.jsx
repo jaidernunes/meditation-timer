@@ -105,7 +105,7 @@ function App() {
 
       <div>
         <button onClick={handleStartPress}>Start Timer</button>
-        <p>{hours}:{minutes}:{seconds}</p>
+        <p>{hours.toString().padStart(2, '0')}:{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}</p>
       </div>
     </>
   );
