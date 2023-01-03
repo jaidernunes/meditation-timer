@@ -26,13 +26,15 @@ function App() {
     if (isRunning) {
       meditationTimer = setInterval(() => {
         setSeconds(seconds - 1);
-        if (seconds === 0 && minutes > 0) {
-          setMinutes(minutes - 1);
+        if (seconds === 0) {
+          if (minutes > 0) {
+            setMinutes(minutes - 1);
+          }
+          if (minutes === 0 && hours > 0) {
+            setHours(hours - 1);
+            setMinutes(59);
+          }
           setSeconds(59);
-        }
-        if (minutes === 0 && hours > 0) {
-          setHours(hours - 1);
-          setMinutes(59);
         }
       }, 1000);
     }
@@ -42,9 +44,6 @@ function App() {
       endingBell.play();
       setIsRunning(false);
     }
-    // else if (!isRunning && seconds !== 0) {
-    //   clearInterval(interval);
-    // }
     return () => {
       clearInterval(meditationTimer);
     }
