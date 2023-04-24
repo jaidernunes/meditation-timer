@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import finalBell from './assets/finalBell1.mp3';
 import intervalBell from './assets/intervalBell1.mp3'
+import "./app.css"
+import "tailwindcss/tailwind.css";
+
 
 const baseTime = 0;
 
@@ -86,36 +89,51 @@ function App() {
   };
 
   return (
-    <>
-      <div>
-        <label>
-          Session duration:
-          <input
-            type="number"
-            value={timeInput}
-            onChange={(event) => setTimeInput(event.target.value)}
-          />
-          &nbsp; minutes
-        </label>
-        <br />
+    <div className='bg-black h-screen flex flex-col items-center'>
+      <div id='options' className="bg-gray-800 py-4 flex flex-wrap justify-center w-screen">
+        <div className='flex w-18 mx-4 '>
+          <label className="mb-2 text-white">
+            Session duration:
+            <input
+              className="border border-gray-300 text-black w-14 rounded-md px-2 py-1 ml-2"
+              type="number"
+              value={timeInput}
+              onChange={(event) => setTimeInput(event.target.value)}
+            />
+            &nbsp; minutes
+          </label>
+        </div>
 
-        Interval Bell every:
-        <label>
-          <input
-            type="number"
-            value={intervalInput}
-            onChange={(event) => setIntervalInput(event.target.value)}
-          />
-          &nbsp; minutes
-        </label>
+        <div className='flex w-18 mx-4'>
+          <label className="mb-2 text-white">
+            Ring a Bell every:
+            <input
+              className="border border-gray-300 text-black w-14 rounded-md px-2 py-1 ml-2"
+              type="number"
+              value={intervalInput}
+              onChange={(event) => setIntervalInput(event.target.value)}
+            />
+            &nbsp; minutes
+          </label>
+        </div>
       </div>
 
-      <div>
-        <button onClick={handleStartPress}>Start Timer</button>
-        <p>{hours.toString().padStart(2, '0')}:{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}</p>
+      <div id='timer' className='flex flex-col items-center justify-center h-full'>
+        <p className="text-5xl text-white font-bold m-4">
+          {hours.toString().padStart(2, '0')}:
+          {minutes.toString().padStart(2, '0')}:
+          {seconds.toString().padStart(2, '0')}
+        </p>
+        <button
+          className="bg-blue-500 text-xl text-white font-bold py-3 px-5 rounded"
+          onClick={handleStartPress}
+        >
+          Start Timer
+        </button>
       </div>
-    </>
+    </div>
   );
+
 }
 
 export default App
