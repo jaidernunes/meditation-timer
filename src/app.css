@@ -1,3 +1,22 @@
+.circle {
+  stroke-dasharray: 440;
+  stroke-dashoffset: 0;
+  stroke-linecap: round;
+  animation: progress 1s linear infinite;
+  transform: rotate(-90deg);
+  width: 150px;
+  height: 150px;
+}
+
+@keyframes progress {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: calc(440 - (440 * var(--percent) / 100));
+  }
+}
+
 /* @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';

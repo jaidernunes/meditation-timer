@@ -90,6 +90,7 @@ function App() {
 
   return (
     <div className='bg-black h-screen flex flex-col items-center'>
+
       <div id='options' className="bg-gray-800 py-4 flex flex-wrap justify-center w-screen">
         <div className='flex w-18 mx-4 '>
           <label className="mb-2 text-white">
@@ -131,6 +132,7 @@ function App() {
           Start Timer
         </button>
       </div>
+
     </div>
   );
 
