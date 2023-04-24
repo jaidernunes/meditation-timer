@@ -20,8 +20,8 @@ function App() {
   const endingBell = new Audio(finalBell);
   const middleBell = new Audio(intervalBell);
 
+  let meditationTimer = null;
   useEffect(() => {
-    let meditationTimer = null;
     if (isRunning) {
       meditationTimer = setInterval(() => {
         setSeconds(seconds - 1);
@@ -48,11 +48,11 @@ function App() {
     }
   }, [isRunning, seconds, isInterval]);
 
+  let intervalBellTimer = null;
   useEffect(() => {
-    let intervalBellTimer = null;
     if (isInterval) {
       intervalBellTimer = setInterval(() => {
-        console.log("single bell")
+        console.log(`Bell on: ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
         middleBell.play();
       }, intervalSeconds * 1000);
     }
